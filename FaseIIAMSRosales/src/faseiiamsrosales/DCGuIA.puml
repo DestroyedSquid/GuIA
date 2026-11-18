@@ -1,0 +1,88 @@
+@startuml
+left to right direction
+skinparam classAttributeIconSize 0
+
+class Usuario {
+    - id_usuario : int
+    - nombre : String
+    - correo : String 
+    - contrasenna : String 
+    - fecha_registro : Date
+    --
+    + iniciarSesion() : void
+    + cerrarSesion() : void
+    + recuperarContrasenna() : void
+}
+
+class Estudiante {
+    - progreso_general : String
+    - certificados_obtenidos : int
+    --
+    + iniciarModulo() : void 
+    + responderEvaluacion() : void 
+    + descargarCertificado() : void
+}
+
+class Administrador {
+    - rol_acceso : String
+    - ultima_conexion : Date
+    --
+    + crearModulo() : void
+    + editarLeccion() : void
+    + verEstadisticas() : void
+}
+
+class Modulo {
+    - id_modulo : int
+    - titulo : String
+    - descripcion : String
+    - orden : int
+    --
+    + agregarLeccion() : void
+    + calcularProgresoModulo() : void
+}
+
+class Leccion {
+    - id_leccion : int
+    - titulo : String
+    - tipo_contenido : String
+    - completada : boolean
+    --
+    + mostrarContenido() : void
+    + marcarComoCompletada() : void
+}
+
+class SimuladorIA {
+    - id_simulador : int
+    - historial_prompts : List
+    - limite_interacciones : int
+    --
+    + enviarPrompt() : void
+    + recibirRespuestaIA() : void
+    + evaluarNormatividadPrompt() : boolean
+}
+
+class Evaluacion {
+    - id_evaluacion : int
+    - preguntas : List
+    - calificacion_minima : float
+    - puntaje_obtenido : float
+    --
+    + calificarRespuestas() : void
+    + aprobar() : boolean
+    + reprobar() : boolean
+}
+
+' Relaciones de Herencia
+Usuario <|-- Estudiante
+Usuario <|-- Administrador
+
+' Relaciones de Asociación y Composición
+Estudiante "1" --> "*" Modulo : Cursa
+Estudiante "1" --> "1" Evaluacion : Realiza
+
+Modulo "1" *-- "*" Leccion : Contiene
+Leccion "1" --> "1" SimuladorIA : Usa
+Modulo "1" --> "1" Evaluacion : Tiene
+
+@enduml

@@ -1,0 +1,45 @@
+@startsalt
+{+
+  { <&arrow-left> Volver a Lecciones |  Simulador de Agente IA | 👤 Perfil: Kai }
+  ---
+  {
+    {
+      <b>📋 REGLAS DEL EJERCICIO
+      1. No usar datos personales.
+      2. Respetar derechos de autor
+      3. Proveer contexto claro.
+      ---
+      Intentos restantes: 4 / 5
+      ---
+      <b>💡 TIP DEL MÓDULO
+      Recuerda asignar un "Rol"
+      a la IA para obtener
+      mejores respuestas.
+      .
+      .
+      [ Finalizar Práctica ]
+    }
+    |
+    {
+      <b>[Agente IA]:</b> ¡Hola! Soy tu agente de prueba.
+      ¿Qué instrucción vamos a practicar hoy?
+      ---
+      <b>[Tú]:</b> Resume el siguiente contrato de
+      compraventa de mi cliente Juan Pérez:
+      [texto adjunto...]
+      ---
+      {+
+        <b>⚠️ ALERTA DE NORMATIVIDAD (Filtro)
+        Tu prompt ha sido bloqueado porque
+        incluye Datos Personales (Nombre).
+        
+        Por favor, anonimiza los datos y
+        vuelve a intentarlo.
+      }
+      .
+      "Escribe tu prompt corregido aquí...                           "
+      { [ 📎 Adjuntar ] | [ Enviar ➔ ] }
+    }
+  }
+}
+@endsalt

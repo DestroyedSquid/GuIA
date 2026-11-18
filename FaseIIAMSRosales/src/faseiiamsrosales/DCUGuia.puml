@@ -1,0 +1,62 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+' Definición de Actores
+actor "Estudiante" as Estudiante
+actor "Administrador" as Admin
+actor "API IA Generativa" as API <<Sistema Externo>>
+
+' Límite del Sistema
+package "Plataforma de Aprendizaje IA" {
+    
+    ' Casos de Uso Generales
+    usecase "Registrarse en la plataforma" as UC_Registro
+    usecase "Iniciar sesión" as UC_Login
+    usecase "Verificar credenciales" as UC_VerificarCred
+    
+    ' Casos de Uso de Aprendizaje
+    usecase "Consultar temario de IA" as UC_Temario
+    usecase "Tomar lección" as UC_Leccion
+    
+    ' Casos de Uso del Simulador
+    usecase "Interactuar con Simulador" as UC_Simulador
+    usecase "Mostrar alerta ética/legal" as UC_Alerta
+    
+    ' Casos de Uso de Evaluación
+    usecase "Realizar evaluación final" as UC_Evaluacion
+    usecase "Descargar certificado" as UC_Certificado
+    usecase "Validar calificación aprobatoria" as UC_ValidarCalif
+    
+    ' Casos de Uso de Administración
+    usecase "Gestionar contenido (Lecciones/Normativas)" as UC_Gestionar
+    usecase "Consultar métricas de aprendizaje" as UC_Metricas
+}
+
+' Relaciones del Estudiante
+Estudiante --> UC_Registro
+Estudiante --> UC_Login
+Estudiante --> UC_Temario
+Estudiante --> UC_Leccion
+Estudiante --> UC_Simulador
+Estudiante --> UC_Evaluacion
+Estudiante --> UC_Certificado
+
+' Relaciones del Administrador
+Admin --> UC_Login
+Admin --> UC_Gestionar
+Admin --> UC_Metricas
+
+' Relaciones de Inclusión (Comportamiento obligatorio)
+UC_Login .> UC_VerificarCred : <<include>>
+UC_Certificado .> UC_ValidarCalif : <<include>>
+
+' Relaciones de Extensión (Comportamiento opcional/condicional)
+' La alerta solo se muestra si el prompt incumple las reglas
+UC_Simulador <.. UC_Alerta : <<extend>>
+
+' Interacción con la API Externa
+UC_Simulador --> API : Envía prompt validado
+API --> UC_Simulador : Retorna respuesta generada
+
+@enduml

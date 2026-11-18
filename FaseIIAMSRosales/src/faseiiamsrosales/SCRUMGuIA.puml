@@ -1,0 +1,69 @@
+@startuml
+left to right direction
+skinparam object {
+    BackgroundColor #F8F9FA
+    BorderColor #2C3E50
+    ArrowColor #3498DB
+}
+
+package "Product Backlog (GuIA Generativa)" {
+    object "HU-01: Autenticación [Prioridad: Alta]" as HU1 {
+        Como = Estudiante
+        Quiero = Registrarme e iniciar sesión
+        Para = Guardar mi progreso y certificados
+        Story_Points = 5
+    }
+    
+    object "HU-02: Módulos Educativos [Prioridad: Alta]" as HU2 {
+        Como = Estudiante
+        Quiero = Visualizar lecciones por módulos
+        Para = Aprender tipos y normas de IA
+        Story_Points = 8
+    }
+    
+    object "HU-03: Simulador Ético [Prioridad: Muy Alta]" as HU3 {
+        Como = Estudiante
+        Quiero = Probar prompts con filtro legal
+        Para = Practicar sin filtrar datos (PII)
+        Story_Points = 13
+    }
+    
+    object "HU-04: Certificación PDF [Prioridad: Media]" as HU4 {
+        Como = Estudiante
+        Quiero = Descargar un certificado al aprobar
+        Para = Validar mis conocimientos
+        Story_Points = 5
+    }
+}
+
+package "Sprint 1: Núcleo y Simulador (2 Semanas)" {
+    object "TASK-01 [Estado: Done]" as T1 {
+        Relacionada = HU-01
+        Detalle = Crear tabla Usuarios y encriptar password
+        Responsable = Backend Dev
+    }
+    
+    object "TASK-02 [Estado: Done]" as T2 {
+        Relacionada = HU-02
+        Detalle = Maquetar dashboard con bloqueo secuencial
+        Responsable = Frontend Dev
+    }
+    
+    object "TASK-03 [Estado: In Progress]" as T3 {
+        Relacionada = HU-03
+        Detalle = Programar filtro para detectar nombres/PII
+        Responsable = IA Dev
+    }
+    
+    object "BUG-01 [Estado: Resuelto]" as B1 {
+        Relacionada = HU-03
+        Error = El simulador permitía enviar prompts vacíos
+        Solucion = Validar input antes de llamar a la API
+    }
+}
+
+HU1 --> T1
+HU2 --> T2
+HU3 --> T3
+HU3 --> B1
+@enduml

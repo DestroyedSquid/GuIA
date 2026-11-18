@@ -1,0 +1,87 @@
+@startuml
+entity "Usuarios" as usuarios {
+  * id_usuario : int <<PK>>
+  --
+  nombre : varchar(100)
+  correo : varchar(100)
+  contrasenna : varchar(255)
+  rol : enum('Estudiante', 'Admin')
+  fecha_registro : datetime
+}
+
+entity "Modulos" as modulos {
+  * id_modulo : int <<PK>>
+  --
+  titulo : varchar(150)
+  descripcion : text
+  orden : int
+}
+
+entity "Lecciones" as lecciones {
+  * id_leccion : int <<PK>>
+  --
+  * id_modulo : int <<FK>>
+  titulo : varchar(150)
+  tipo_contenido : enum('Texto', 'Video', 'Simulador')
+}
+
+entity "Evaluaciones" as evaluaciones {
+  * id_evaluacion : int <<PK>>
+  --
+  * id_modulo : int <<FK>>
+  calificacion_minima : decimal(4,2)
+  preguntas_json : json
+}
+
+entity "Simuladores_IA" as simuladores {
+  * id_simulador : int <<PK>>
+  --
+  * id_leccion : int <<FK>>
+  limite_interacciones : int
+}
+
+entity "Progreso_Lecciones" as progreso {
+  * id_progreso : int <<PK>>
+  --
+  * id_usuario : int <<FK>>
+  * id_leccion : int <<FK>>
+  completada : boolean
+  fecha_completado : datetime
+}
+
+entity "Resultados_Evaluaciones" as resultados {
+  * id_resultado : int <<PK>>
+  --
+  * id_usuario : int <<FK>>
+  * id_evaluacion : int <<FK>>
+  puntaje_obtenido : decimal(4,2)
+  certificado_url : varchar(255)
+  fecha_realizacion : datetime
+}
+
+entity "Historial_Prompts" as historial {
+  * id_prompt : int <<PK>>
+  --
+  * id_usuario : int <<FK>>
+  * id_simulador : int <<FK>>
+  texto_prompt : text
+  bloqueado_por_normativa : boolean
+  fecha_envio : datetime
+}
+
+' Relaciones (Cardinalidad Pata de Cuervo)
+modulos ||--o{ lecciones : "1 a N"
+modulos ||--|| evaluaciones : "1 a 1"
+lecciones ||--o| simuladores : "1 a 1 o 0"
+
+' Tablas puente (Resolución de relaciones Muchos a Muchos)
+usuarios ||--o{ progreso : "1 a N"
+lecciones ||--o{ progreso : "1 a N"
+
+usuarios ||--o{ resultados : "1 a N"
+evaluaciones ||--o{ resultados : "1 a N"
+
+usuarios ||--o{ historial : "1 a N"
+simuladores ||--o{ historial : "1 a N"
+
+@enduml

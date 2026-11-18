@@ -1,0 +1,38 @@
+@startsalt
+{+
+  { <&home> 🎓 GuIA Generativa | "Buscar lección...                   " | 👤 Perfil: Yo }
+  ---
+  <b>MI PROGRESO GENERAL
+  { [========================>               ] | 45% }
+  ---
+  <b>📚 MÓDULOS DE APRENDIZAJE
+  {
+    {+
+      <b>Módulo 1: Tipos de IA
+      Estado: COMPLETADO
+      Calificación: 9.5/10
+      .
+      [ Ver Certificado ]
+    } | {+
+      <b>Módulo 2: Normatividad
+      Estado: EN PROGRESO (50%)
+      Lección actual: Derechos de Autor
+      .
+      [ Continuar ➔ ]
+    }
+    {+
+      <b>Módulo 3: Prompting 101
+      Estado: BLOQUEADO
+      Requisito: Aprobar Mod 2
+      .
+      [ 🔒 ]
+    } | {+
+      <b>Módulo 4: Simulador IA
+      Estado: BLOQUEADO
+      Requisito: Aprobar Mod 3
+      .
+      [ 🔒 ]
+    }
+  }
+}
+@endsalt

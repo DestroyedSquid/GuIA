@@ -1,0 +1,47 @@
+@startuml
+|Estudiante|
+start
+:Ingresa a la lección "Simulador de Agente IA";
+
+|Sistema|
+:Carga interfaz de chat y reglas;
+
+repeat
+    |Estudiante|
+    :Redacta un prompt y presiona "Enviar";
+    
+    |Sistema|
+    :Intercepta el mensaje;
+    :Aplica Filtro de Normatividad;
+    
+    if (¿El prompt incumple reglas éticas/legales?) then (Sí)
+        :Bloquea el envío;
+        :Muestra "Alerta Educativa";
+        |Estudiante|
+        :Lee la alerta y reescribe la instrucción;
+        note right: Obliga al usuario a aplicar\nlas reglas aprendidas
+    else (No)
+        |Sistema|
+        :Envía prompt aprobado;
+        
+        |API Externa (IA)|
+        :Procesa la solicitud;
+        :Genera respuesta;
+        
+        |Sistema|
+        :Muestra la respuesta en el chat;
+    endif
+    
+|Estudiante|
+repeat while (¿Desea enviar otro prompt\ny tiene límite disponible?) is (Sí)
+->No;
+
+|Sistema|
+:Guarda historial de la interacción;
+:Habilita botón "Finalizar práctica";
+:Marca lección como Completada;
+
+|Estudiante|
+:Sale del simulador;
+stop
+@enduml
