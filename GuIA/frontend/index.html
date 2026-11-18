@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GuIA Generativa — Plataforma Educativa</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ==================== VISTA 1: LOGIN / REGISTRO ==================== -->
+  <section id="view-auth" class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-left">
+        <h1>GuIA</h1>
+        <p class="auth-subtitle">Una guía práctica para aprender a usar correctamente y con ética la Inteligencia Artificial Generativa.</p>
+        <ul class="auth-highlights">
+          <li><strong>Módulo I:</strong> Tipos de IA Generativa</li>
+          <li><strong>Módulo II:</strong> Normatividad y Privacidad (PII)</li>
+          <li><strong>Módulo III:</strong> Ingeniería de Prompts</li>
+          <li><strong>Módulo IV:</strong> Simulador con Agente IA Real</li>
+        </ul>
+      </div>
+
+      <div class="auth-right">
+        <!-- Formulario Login -->
+        <form id="form-login" onsubmit="iniciarSesion(event)">
+          <h2>Identifícate.</h2>
+          <div class="form-group">
+            <label for="login-email">Correo:</label>
+            <input type="email" id="login-email" value="Jose@gmail.com" required>
+          </div>
+          <div class="form-group">
+            <label for="login-pass">Contraseña:</label>
+            <input type="password" id="login-pass" value="••••••••••••" required>
+          </div>
+          <button type="submit" class="btn-primary btn-block">Iniciar Sesión</button>
+          <p class="auth-switch">¿No tienes cuenta? <a href="#" onclick="alternarAuth('registro')">Regístrate aquí</a></p>
+        </form>
+
+        <!-- Formulario Registro -->
+        <form id="form-registro" class="hidden" onsubmit="registrarUsuario(event)">
+          <h2>Crear Cuenta.</h2>
+          <div class="form-group">
+            <label for="reg-nombre">Nombre Completo (para tu certificado):</label>
+            <input type="text" id="reg-nombre" placeholder="Ej. Rosales Guzman Jose Emiliano" required>
+          </div>
+          <div class="form-group">
+            <label for="reg-email">Correo:</label>
+            <input type="email" id="reg-email" placeholder="estudiante@uacm.edu.mx" required>
+          </div>
+          <div class="form-group">
+            <label for="reg-pass">Contraseña:</label>
+            <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres" required>
+          </div>
+          <button type="submit" class="btn-primary btn-block">Registrarme y Entrar</button>
+          <p class="auth-switch">¿Ya tienes cuenta? <a href="#" onclick="alternarAuth('login')">Inicia sesión</a></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== APLICACIÓN PRINCIPAL ==================== -->
+  <div id="app-shell" class="hidden">
+    <!-- Barra de Navegación Superior -->
+    <header class="topbar">
+      <div class="topbar-brand" onclick="navegar('inicio')">
+        <span class="brand-badge">GuIA</span>
+        <span class="brand-name">GuIA Generativa</span>
+      </div>
+
+      <nav class="topbar-nav">
+        <button class="nav-btn active" data-view="inicio" onclick="navegar('inicio')">Módulos</button>
+        <button class="nav-btn" data-view="simulador" onclick="navegar('simulador')">Simulador IA</button>
+        <button class="nav-btn" data-view="normatividad" onclick="navegar('normatividad')">Normatividad</button>
+        <button class="nav-btn" data-view="certificado" onclick="navegar('certificado')">Certificado</button>
+      </nav>
+
+      <div class="topbar-actions">
+        <span id="user-display" class="user-pill">Rosales Guzman Jose Emiliano</span>
+        <button class="btn-expo" onclick="activarModoExpo()" title="Desbloquea todos los módulos para demostración">Modo Expo</button>
+        <button class="btn-danger-sm" onclick="cerrarSesion()">Cerrar Sesión</button>
+      </div>
+    </header>
+
+    <main class="main-container">
+
+      <!-- ==================== VISTA 2: DASHBOARD / MÓDULOS ==================== -->
+      <section id="view-inicio" class="view-section">
+        <div class="progress-panel">
+          <div class="progress-header">
+            <span><strong>Mi progreso global:</strong> <span id="progress-text">0%</span></span>
+            <button class="btn-link-sm" onclick="reiniciarProgreso()">Reiniciar avance</button>
+          </div>
+          <div class="progress-track">
+            <div id="progress-fill" class="progress-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <h2 class="section-heading">Módulos de aprendizaje:</h2>
+        <div id="modules-grid" class="modules-grid">
+          <!-- Se renderiza dinámicamente desde app.js -->
+        </div>
+      </section>
+
+      <!-- ==================== VISTA 3: LECCIÓN Y EVALUACIÓN ==================== -->
+      <section id="view-modulo" class="view-section hidden">
+        <button class="btn-back" onclick="navegar('inicio')">← Volver a Módulos</button>
+        <div id="modulo-contenido" class="lesson-box">
+          <!-- Contenido de lección y examen cargado por JS -->
+        </div>
+      </section>
+
+      <!-- ==================== VISTA 4: SIMULADOR ÉTICO (GEMINI API) ==================== -->
+      <section id="view-simulador" class="view-section hidden">
+        <div class="simulator-layout">
+          <!-- Panel Izquierdo: Reglas e Intentos -->
+          <aside class="sim-sidebar">
+            <h3>Reglas del Ejercicio:</h3>
+            <ol class="rules-list">
+              <li><strong>No ingresar datos personales (PII):</strong> Evita nombres reales, teléfonos o correos.</li>
+              <li><strong>Respetar derechos de autor:</strong> No pidas copiar obras protegidas.</li>
+              <li><strong>Estructura clara:</strong> Define un <em>Rol</em>, <em>Contexto</em>, <em>Tarea</em> y <em>Formato</em>.</li>
+            </ol>
+
+            <div class="attempts-box">
+              Intentos disponibles: <strong id="sim-intentos">5 / 5</strong>
+            </div>
+
+            <div class="demo-presets">
+              <p class="preset-label">Pruebas rápidas para exposición:</p>
+              <button type="button" class="btn-preset-danger" onclick="cargarEjemploPII()">1. Probar Prompt con PII (Bloqueo)</button>
+              <button type="button" class="btn-preset-ok" onclick="cargarEjemploSeguro()">2. Probar Prompt Ético (Gemini)</button>
+            </div>
+
+            <button class="btn-back btn-block" onclick="navegar('inicio')">← Volver a Inicio</button>
+          </aside>
+
+          <!-- Panel Derecho: Chat con Agente IA -->
+          <div class="sim-chat-area">
+            <div class="sim-header">
+              <span>Agente Tutor — Conectado a <strong>Gemini API</strong></span>
+              <span class="status-dot">En línea</span>
+            </div>
+
+            <div id="chat-history" class="chat-history">
+              <div class="msg-agent">
+                ¡Hola! Soy tu agente de prueba. Redacta una instrucción (prompt) aplicando las reglas de privacidad y estructura para completar el Módulo IV.
+              </div>
+            </div>
+
+            <form class="sim-input-bar" onsubmit="enviarPromptAlSimulador(event)">
+              <label for="prompt-input">Escribe:</label>
+              <input type="text" id="prompt-input" placeholder="Redacta tu prompt aquí (ej. Actúa como asesor financiero y explica...)" autocomplete="off">
+              <button type="submit" id="btn-enviar-prompt" class="btn-primary">Enviar ➤</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VISTA 5: GUÍA DE NORMATIVIDAD ==================== -->
+      <section id="view-normatividad" class="view-section hidden">
+        <h2 class="section-heading">Marco Normativo y Buenas Prácticas en IA</h2>
+        <div class="norm-grid">
+          <div class="norm-card">
+            <h3>1. Protección de Datos (PII / LFPDPPP)</h3>
+            <p>Nunca alimentes modelos públicos con información identificable: nombres completos, teléfonos, CURP, expedientes médicos o datos bancarios.</p>
+            <div class="code-compare bad">❌ Mal: "Resume el historial clínico de Juan Pérez, tel 5512345678."</div>
+            <div class="code-compare good">✅ Bien: "Resume los síntomas de un paciente adulto de 35 años con diagnóstico de..."</div>
+          </div>
+          <div class="norm-card">
+            <h3>2. Derechos de Autor y Propiedad Intelectual</h3>
+            <p>Las obras generadas íntegramente por IA sin intervención humana creativa no son registrables en muchas jurisdicciones, y replicar estilos de artistas vivos infringe ética profesional.</p>
+            <div class="code-compare bad">❌ Mal: "Escribe un capítulo idéntico al estilo de Patrick Rothfuss usando sus personajes."</div>
+            <div class="code-compare good">✅ Bien: "Sugiere 3 estructuras narrativas de fantasía épica centradas en un sistema de magia..."</div>
+          </div>
+          <div class="norm-card">
+            <h3>3. Anatomía del Prompt Efectivo</h3>
+            <p>Para minimizar alucinaciones y obtener respuestas útiles, todo prompt debe integrar cuatro componentes:</p>
+            <ul>
+              <li><strong>Rol:</strong> Quién debe ser la IA.</li>
+              <li><strong>Contexto:</strong> Para qué o quién es la información.</li>
+              <li><strong>Tarea:</strong> Acción exacta a ejecutar.</li>
+              <li><strong>Formato:</strong> Tabla, lista, resumen o código.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VISTA 6: CERTIFICADO PDF ==================== -->
+      <section id="view-certificado" class="view-section hidden">
+        <div id="certificado-bloqueado" class="locked-notice hidden">
+          <h3>Certificado aún no disponible</h3>
+          <p>Debes aprobar los módulos para desbloquear tu certificado oficial, o activar el <strong>Modo Expo</strong> en la barra superior.</p>
+          <button class="btn-primary" onclick="navegar('inicio')">Ir a mis Módulos</button>
+        </div>
+
+        <div id="certificado-oficial" class="certificate-sheet">
+          <div class="cert-border">
+            <p class="cert-kicker">PLATAFORMA EDUCATIVA DE INTELIGENCIA ARTIFICIAL</p>
+            <h1 class="cert-title">CERTIFICADO DE APROBACIÓN</h1>
+            <p class="cert-text">La plataforma educativa <strong>GuIA Generativa</strong> otorga el presente reconocimiento a:</p>
+            <h2 id="cert-student-name" class="cert-name">Rosales Guzman Jose Emiliano</h2>
+            <p id="cert-description" class="cert-desc">
+              Por haber completado y aprobado satisfactoriamente el programa integral de <strong>Inteligencia Artificial Generativa, Normatividad Ética y Diseño de Prompts</strong>, demostrando el dominio de los fundamentos operativos con una calificación final de <strong id="cert-grade">9.5 / 10</strong>.
+            </p>
+            <div class="cert-meta">
+              <span><strong>Fecha de emisión:</strong> Noviembre 2026</span>
+              <span><strong>Folio de validación:</strong> GUIA-2026-001</span>
+            </div>
+          </div>
+
+          <div class="cert-actions no-print">
+            <button class="btn-back" onclick="navegar('inicio')">← Volver al Inicio</button>
+            <button class="btn-primary" onclick="window.print()">⬇ Descargar PDF</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
